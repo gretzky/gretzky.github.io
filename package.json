@@ -4,7 +4,6 @@
   "private": true,
   "homepage": "https://gretzky.github.io",
   "dependencies": {
-    "gh-pages": "^1.2.0",
     "grid-styled": "^5.0.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
