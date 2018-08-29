@@ -12,7 +12,7 @@ const App = () => (
   >
     <Heading pb={theme.space[1]}>
       👋 hey i'm sara, a software developer originally from boston now living in
-      the OG portland (maine). before software, i was an technology educator to
+      the OG portland (maine). before software, i was a technology educator to
       kids aged 13-24 and before that i was an award winning filmmaker.{' '}
     </Heading>
     <Heading pb={theme.space[1]}>
