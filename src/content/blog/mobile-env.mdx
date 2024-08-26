@@ -12,7 +12,7 @@ Setting up a cross-platform mobile environment, especially for React Native,
 is <Tooltip initialText="type 3 fun" hoverText="not fun at all" />.
 I try to update this as frequently as possible, but as always your mileage may vary.
 
-This guide assumes you are on a Mac. If you're on Windows, that's a personal problem. To get a deeper sense of what I'm working with, you can check out my [machine config](/dev-env) as a whole.
+This guide assumes you are on a Mac. If you're on Windows, that's a personal problem. To get a deeper sense of what I'm working with, you can check out my [machine config](/blog/dev-env) as a whole.
 
 This guide is written as project-agnostic as possible and there will be notes that project-specific configurations will be needed.
 
@@ -34,13 +34,13 @@ xcode-select --install
 
 ## 1. Install Packages
 
-Using [Homebrew](https://brew.sh/) (or whatever your preferred package manager), you'll need the following packages:
+Using <a href="https://brew.sh/" target="_blank" rel="noopener noreferrer">Homebrew</a> (or whatever your preferred package manager), you'll need the following packages:
 
 ```bash
 brew install gnupg applesimutils git node watchman fastlane aria2
 ```
 
-I also recommend [dotenvx](https://dotenvx.com/docs/quickstart) for handling environment variables. It can be installed globally as well.
+I also recommend <a href="https://dotenvx.com/docs/quickstart" target="_blank" rel="noopener noreferrer">dotenvx</a> for handling environment variables. It can be installed globally as well.
 
 ```bash
 brew install dotenvx
@@ -52,7 +52,7 @@ If you don't need iOS development, you can skip this step. I wouldn't.
 
 ### a. Install Xcode
 
-I prefer the **[xcodes](https://github.com/XcodesOrg/XcodesApp)** library for Xcode version management.
+I prefer the **<a href="https://github.com/XcodesOrg/XcodesApp" target="_blank" rel="noopener noreferrer">xcodes</a>** library for Xcode version management.
 
 ```bash
 brew install xcodes
@@ -191,7 +191,7 @@ avdmanager create avd -n <name> -k "system-images;android-<version>;google_apis;
 
 ## 4. React Native / Expo Setup
 
-At this point, your machine should be setup for native development. If you're using Expo, I highly recommend installing [Expo Orbit](https://docs.expo.dev/build/orbit/).
+At this point, your machine should be setup for native development. If you're using Expo, I highly recommend installing <a href="https://docs.expo.dev/build/orbit/" target="_blank" rel="noopener noreferrer">Expo Orbit</a>.
 
 ```bash
 brew install --cask expo-orbit
