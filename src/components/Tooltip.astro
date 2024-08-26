@@ -1,0 +1,24 @@
+---
+const { initialText, hoverText } = Astro.props;
+---
+
+<style>
+  .hover-text::after {
+    content: attr(data-initial-text);
+  }
+
+  .hover-text:hover::after {
+    content: attr(data-hover-text);
+  }
+
+  .hover-text {
+    cursor: pointer;
+  }
+</style>
+
+<span 
+  class="hover-text" 
+  data-initial-text={initialText} 
+  data-hover-text={hoverText}
+  style="text-decoration-line:underline;"
+/>

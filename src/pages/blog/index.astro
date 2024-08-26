@@ -1,0 +1,140 @@
+---
+import { getCollection } from "astro:content"
+import dayjs from 'dayjs'
+import Page from "../../layouts/Page.astro"
+
+const posts = await getCollection('blog')
+
+const categories = posts.reduce((acc, post) => {
+  post.data.category.forEach(category => {
+    if (!acc.includes(category)) {
+      acc.push(category)
+    }
+  })
+  return acc
+}, [])
+
+const postsByCategory = (category:string) => posts
+  .filter(post => post.data.category.includes(category))
+  .sort((a,z) => z.data.lastUpdated.valueOf() - a.data.lastUpdated.valueOf())
+  .map(post => {
+    const createdAt = dayjs(post.data.createdAt)
+    const lastUpdatedAt = dayjs(post.data.lastUpdated)
+    const isSame = createdAt.isSame(lastUpdatedAt, 'day')
+
+    const isRecent = dayjs().diff(lastUpdatedAt, 'day') <= 7;
+
+    const isNew = isRecent && isSame;
+
+    return {
+      ...post,
+      tag: isNew ? 'new!' : isRecent ? 'updated!' : null
+    }
+  })
+
+const getTagColor = tag => {
+  if (tag.startsWith('new')) return 'var(--green)'
+  if (tag.startsWith('updated')) return 'var(--yellow)'
+  return 'var(--coal)'
+}
+---
+
+<Page title="blog">
+  <div class="card-container">
+    {categories.map((category) => (
+      <div>
+      <h2>{category}</h2>
+       <ul>
+          {postsByCategory(category).map(post => (
+            <li>
+              <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+              {post.tag && <span class="updated-tag" style={`background-color:${getTagColor(post.tag)}`}>{post.tag}</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+
+</Page>
+  
+<style>
+  @counter-style point {
+    system: cyclic;
+    symbols: "\1F449";
+    suffix: " ";
+  }
+
+  .card-container {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  @media screen and (min-width: 600px) {
+    .card-container {
+      width: 60%;
+    }
+  }
+
+  ul {
+    color: var(--beige);
+    list-style: point;
+  }
+
+  li {
+    margin-top: 10px;
+  }
+
+  li a {
+    color: var(--beige);
+    font-weight: 600;
+    text-decoration-line: none;
+    letter-spacing: -0.5px;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .filters {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: 25px;
+    width: auto;
+    height: 32px;
+    align-items: center;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 600;
+    cursor: pointer;
+
+    .filter {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--coal);
+      font-style: italic;
+      padding: 0.2rem 0.5rem;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+
+      .selected {
+        box-shadow: 5px 5px var(--white);
+        border: 2px solid var(--coal);
+      }
+    }
+  }
+
+  .updated-tag {
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 16px;
+    color: var(--coal);
+    padding: 0.2rem 0.5rem;
+    font-style: italic;
+  }
+</style>

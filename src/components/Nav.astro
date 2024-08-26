@@ -1,0 +1,39 @@
+---
+const { pathname } = Astro.url;
+const subpath = pathname.match(/[^\/]+/g);
+const isActive = (href: string) => href === pathname || href === '/' + subpath?.[0];
+console.log(isActive)
+---
+
+<div class="row">
+  <a href="/" class:list={["button", { active: isActive('/') }]} style="background-color:var(--yellow);">home</a>
+  <a href="/about" class:list={["button", { active: isActive('/about') }]}  style="background-color:var(--blue);">about</a>
+  <a href="/projects" class:list={["button", { active: isActive('/projects') }]}  style="background-color:var(--green);">projects</a>
+  <a href="/blog" class:list={["button", { active: isActive('/blog') }]}  style="background-color:var(--pink);">blog</a>
+</div>
+
+<style>
+	.row {
+		display: flex;
+		flex-direction: column;
+
+		.button {
+			margin-bottom: 15px;
+		}
+
+    .button.active {
+      color: var(--beige);
+    }
+	}
+
+	@media (min-width: 600px) {
+		.row {
+			flex-direction: row;
+
+			.button {
+				margin-right: 25px;
+				margin-bottom: 0;
+			}
+		}
+	}
+</style>

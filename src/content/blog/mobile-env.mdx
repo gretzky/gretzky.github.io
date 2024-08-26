@@ -1,0 +1,203 @@
+---
+title: "Mobile Dev Environment"
+description: "My mobile development setup and configuration"
+category: ["development"]
+createdAt: 2024-08-26
+lastUpdated: 2024-08-26
+---
+
+import Tooltip from "../../components/Tooltip.astro";
+
+Setting up a cross-platform mobile environment, especially for React Native,
+is <Tooltip initialText="type 3 fun" hoverText="not fun at all" />.
+I try to update this as frequently as possible, but as always your mileage may vary.
+
+This guide assumes you are on a Mac. If you're on Windows, that's a personal problem. To get a deeper sense of what I'm working with, you can check out my [machine config](/dev-env) as a whole.
+
+This guide is written as project-agnostic as possible and there will be notes that project-specific configurations will be needed.
+
+## 0. Install Xcode CLI Tools
+
+If you've installed Homebrew already and have downloaded packages using it, you've probably already done this step.
+
+Before anything else, you must install the **Xcode Command Line Tools**. To check if you have them installed already, run:
+
+```bash
+xcode-select --print-path
+```
+
+If this returns empty, you need to install the tools.
+
+```bash
+xcode-select --install
+```
+
+## 1. Install Packages
+
+Using [Homebrew](https://brew.sh/) (or whatever your preferred package manager), you'll need the following packages:
+
+```bash
+brew install gnupg applesimutils git node watchman fastlane aria2
+```
+
+I also recommend [dotenvx](https://dotenvx.com/docs/quickstart) for handling environment variables. It can be installed globally as well.
+
+```bash
+brew install dotenvx
+```
+
+## 3. iOS Setup
+
+If you don't need iOS development, you can skip this step. I wouldn't.
+
+### a. Install Xcode
+
+I prefer the **[xcodes](https://github.com/XcodesOrg/XcodesApp)** library for Xcode version management.
+
+```bash
+brew install xcodes
+```
+
+Once installed, you can install the latest version of Xcode.
+
+```bash
+xcodes install --latest --no-superuser
+```
+
+After it installs, you'll need to accept the license agreement.
+
+```bash
+sudo xcode-select -switch /Applications/Xcode.app
+sudo xcodebuild -license accept
+```
+
+### b. Add Apple Developer Certificates\*
+
+For this step, you will need to have the following:
+
+- An Apple Developer Account
+- A project initialized and set up, either via EAS or Fastlane
+
+Part of project initialization is generating certificates for developing your app. These certificates are project specific and need to be added to your keychain. 2 of these certificates need to be added to your keychain: 1 should have the `.cer` extension, the other `.p12`.
+
+You can add these certificates to your keychain by double-clicking on them. You will be prompted to enter your password.
+
+You can also add them from the command line:
+
+```bash
+# run from the directory where the certs are located
+
+sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain <certname>.cer
+
+sudo security import <cert>.p12 -P <password> -A -t cert -f pkcs12 -k /Library/Keychains/System.keychain
+```
+
+If you have a project with many developers, I recommend [using dotenvx to manage certificates]().
+
+### c. Install CocoaPods
+
+Cocoapods is a dependency manager for iOS. It requires Ruby to be installed, so be sure your Ruby installation is not screwed up ~~as it usually is on a Mac~~.
+
+```bash
+sudo gem install cocoapods
+```
+
+### d. Install OS versions + create simulators
+
+Using xcodes, we can install the latest versions of iOS and create simulators for them.
+
+I also recommend installing the oldest version of iOS that's currently supported by Apple, here's a handy little script to do that:
+
+```javascript
+const { execSync } = require("child_process");
+
+function getIosVersions() {
+  const runtimesList = execSync("xcodes runtimes").toString();
+
+  const runtimes = runtimesList
+    .split("\n")
+    .filter((runtime) => runtime.startsWith("iOS"))
+    .map((runtime) =>
+      runtime.includes("(") ? runtime.split("(")[0].trim() : runtime.trim()
+    );
+
+  return {
+    latest: runtimes[runtimes.length] - 1,
+    oldest: runtimes[0],
+  };
+}
+```
+
+Once you have the versions, you can install them with xcodes:
+
+```bash
+xcodes runtimes install <version> # e.g. 18.1
+```
+
+You can then create simulators with xcrun. When creating simulators, be sure the device version is cased properly.
+
+```bash
+xcrun simctl create "<name>" <version>
+# e.g.
+# xcrun simctl create "iPhone 15 Pro" 18.1
+```
+
+Your machine should now be (mostly) ready for iOS development, sans any project-specific needs.
+
+## 3. Android Setup
+
+### a. Install the Java JDK
+
+Zulu 17 is the recommended JDK for Android development for React Native.
+
+```bash
+brew install --cask zulu@17
+```
+
+### b. Install Android Studio
+
+For many years I tried to run headless Android Studio, but it's just not worth the headache. You can install the CLI tools separately, which I recommend but in addition to Android Studio itself.
+
+```bash
+brew install --cask android-studio android-commandlinetools
+```
+
+### c. Install SDK Manager and other tools
+
+First, accept the license agreement
+
+```bash
+yes | sdkmanager --licenses
+```
+
+Then install the tools. Note that some versions may need to be changed depending on your projects needs.
+
+```bash
+sdkmanager "cmdline-tools;latest" "patcher;v4" "build-tools;30.0.2" "platforms;android-32" "emulator" "tools" "platform-tools" "ndk-bundle"
+```
+
+### d. Create emulators
+
+You can create emulators using the AVD Manager in Android Studio, but I prefer to do it from the command line.
+
+You'll need to know the version of Android you're targeting, as well as the device you want to emulate.
+
+```bash
+avdmanager create avd -n <name> -k "system-images;android-<version>;google_apis;x86_64" --device <device>
+
+# e.g.
+# avdmanager create avd -n "Pixel 6" -k "system-images;android-32;google_apis;x86_64" --device "pixel_6"
+```
+
+## 4. React Native / Expo Setup
+
+At this point, your machine should be setup for native development. If you're using Expo, I highly recommend installing [Expo Orbit](https://docs.expo.dev/build/orbit/).
+
+```bash
+brew install --cask expo-orbit
+```
+
+From here, consult your project to take care of any specific needs.
+
+<br />
+<br />

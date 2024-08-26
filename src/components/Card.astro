@@ -1,0 +1,52 @@
+---
+const { idx, title, style } = Astro.props
+
+const colorByIndex = (idx?:number) => {
+  const colors = [
+    'yellow',
+    'pink',
+    'green',
+    'purple',
+    'blue',
+    'orange',
+    'red',
+    'gentlePeachLol'
+  ]
+
+  if (!idx) {
+    return colors[Math.floor(Math.random() * colors.length)]
+  }
+
+  if (idx >= colors.length) {
+    idx = idx % colors.length
+  } else {
+    idx = idx
+  }
+  return colors[idx]
+}
+---
+
+<div class="card" style={style}>
+  <div class="inner-card" style={`background-color: var(--${colorByIndex(idx)})`}>
+    <h3 style="color:var(--coal);">{title}</h3>
+  </div>
+  <slot/>
+</div>
+
+<style>
+  .card {
+    background-color: var(--beige);
+    padding: 0.5rem;
+    min-width: 200px;
+  }
+  
+  .inner-card {
+    background-color: var(--white);
+    border: 1.5px solid var(--coal);
+    padding: 0.5rem 1rem;
+    
+    h3 {
+      line-height: 0;
+    }
+  }
+</style>

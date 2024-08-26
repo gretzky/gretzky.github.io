@@ -1,0 +1,83 @@
+---
+import Page from '../layouts/Page.astro';
+---
+<Page title="about">
+	<div class="row">
+		<div class="column">
+			<img src="camping.jpeg" />
+		</div>
+		<div class="column">
+			<p>Hello! I'm Spencer.<br/><br/>
+			I'm a mobile technologist and <a class="external" href="https://www.maine.gov/ifw/programs-resources/registered-maine-guides/index.html">Registered Maine Guide</a> living here in Vacationland with my 3 dogs.<br/><br/>I've been writing software for over 10 years, with React Native being my primary focus since 2016 and Expo since 2018. I've helped launch more than 5 applications, all of which are built with React Native and Expo. Currently, I'm a staff software engineer working on the <a class="external" href="https://going.com">Going</a> app.<br/><br/>Outside of that, I love geography, maps, and navigation and spend most of my free time traveling, camping with my dogs, skiing, or sea kayaking along Maine's coast. 
+			</p>
+		</div>	
+	</div>	
+</Page>
+
+<style>
+	.container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-left: auto;
+		margin-right: auto;
+		width: 100%;
+		height: 100vh;
+	}
+
+	h2 {
+		color: var(--beige);
+		font-size: 3rem;
+		font-weight: 800;
+		font-style: italic;
+	}
+
+	.row {
+		display: flex;
+		flex-direction: column;
+
+		a {
+			margin-bottom: 15px;
+		}
+	}
+
+	p {
+		font-size: 24px;
+		color: var(--beige);
+		font-weight: 500;
+	}
+
+	.column {
+		display: flex;
+		flex-direction: column;
+		flex: 0.5;
+		text-align: center;
+
+		img {
+			width: 100%;
+		}
+	}
+
+	@media (min-width: 600px) {
+		.container {
+			width: 90%;
+		}
+
+		.row {
+			flex-direction: row;
+
+			.button {
+				margin-right: 25px;
+				margin-bottom: 0;
+			}
+		}
+
+		.column {
+			text-align: left;
+
+			img {
+				width: 90%;
+			}
+		}
+	}
+</style>

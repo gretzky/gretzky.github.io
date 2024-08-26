@@ -1,0 +1,123 @@
+/*
+  The CSS in this style tag is based off of Bear Blog's default CSS.
+  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
+  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
+ */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@counter-style point {
+  system: cyclic;
+  symbols: "\1F449";
+  suffix: " ";
+}
+
+@counter-style eyes {
+  system: cyclic;
+  symbols: "\1F440";
+  suffix: " ";
+}
+
+@counter-style arrow {
+  system: cyclic;
+  symbols: "➡️";
+  suffix: " ";
+}
+
+:root {
+  --gray-light: #1b1d23;
+  --gray-dark: #131519;
+  --gray-darkest: #0d0f11;
+  --coal: #0f0d0e;
+  --charcoal: #231f20;
+  --gray: #262522;
+  --yellow: #fcba28;
+  --pink: #f38ba3;
+  --green: #0ba95b;
+  --purple: #7b5ea7;
+  --beige: #f9f4da;
+  --blue: #12b5e5;
+  --orange: #fc7428;
+  --red: #ed203d;
+  --white: #ffffff;
+  --gentlePeachLol: #f99157;
+  --magesticPurple: #9d7dce;
+  --border-dark: 0.12rem solid var(--charcoal);
+  --border-dark-shadow: 0 0 0 0.1rem var(--charcoal);
+  --border-light: 0.07rem solid rgba(249, 244, 218, 0.5);
+  --body-padding: 2rem;
+  --body-border: 1.3rem;
+  --focus-object: 0 0 0 0.2rem var(--blue), 0 0 0 0.27rem var(--white);
+  --focus-text: 0 0 0 0.2rem var(--charcoal), 0 0 0 0.27rem var(--blue);
+  --focus-input: 0 0 0 0.1em var(--charcoal), 0 0 0 0.2em var(--blue);
+}
+
+html {
+  font-family: "Inter";
+  background-color: #0f0d0e;
+  color: #f9f4da;
+}
+
+body {
+  padding: var(--body-padding);
+  background-color: var(--coal);
+  background-image: repeating-linear-gradient(
+      to right,
+      var(--charcoal),
+      var(--charcoal) 1px,
+      transparent 1px,
+      transparent 30px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--charcoal),
+      var(--charcoal) 1px,
+      transparent 1px,
+      transparent 30px
+    );
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.4;
+  color: var(--white);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 800;
+  color: var(--beige);
+  font-style: italic;
+}
+
+p li {
+  font-weight: 600;
+  color: var(--beige);
+}
+
+.button {
+  color: var(--coal);
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-style: italic;
+  text-decoration: none;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-shadow: 5px 5px var(--white);
+  border: 2px solid var(--coal);
+  background-color: var(--yellow);
+}
+
+.external {
+  font-weight: 600;
+  color: var(--beige);
+  text-decoration-line: underline;
+}
+
+@media screen and (min-width: 600px) {
+  .button {
+    font-size: 1.5rem;
+  }
+}
