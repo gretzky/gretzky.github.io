@@ -5,8 +5,8 @@ import Page from "../../layouts/Page.astro"
 
 const posts = await getCollection('blog')
 
-const categories = posts.reduce((acc, post) => {
-  post.data.category.forEach(category => {
+const categories = posts.reduce((acc: any[], post) => {
+  post.data.category.forEach((category:string) => {
     if (!acc.includes(category)) {
       acc.push(category)
     }
@@ -18,9 +18,9 @@ const postsByCategory = (category:string) => posts
   .filter(post => post.data.category.includes(category))
   .sort((a,z) => z.data.lastUpdated.valueOf() - a.data.lastUpdated.valueOf())
   .map(post => {
-    const createdAt = dayjs(post.data.createdAt)
+    const pubDate = dayjs(post.data.pubDate)
     const lastUpdatedAt = dayjs(post.data.lastUpdated)
-    const isSame = createdAt.isSame(lastUpdatedAt, 'day')
+    const isSame = pubDate.isSame(lastUpdatedAt, 'day')
 
     const isRecent = dayjs().diff(lastUpdatedAt, 'day') <= 7;
 
@@ -32,7 +32,7 @@ const postsByCategory = (category:string) => posts
     }
   })
 
-const getTagColor = tag => {
+const getTagColor = (tag:string) => {
   if (tag.startsWith('new')) return 'var(--green)'
   if (tag.startsWith('updated')) return 'var(--yellow)'
   return 'var(--coal)'
