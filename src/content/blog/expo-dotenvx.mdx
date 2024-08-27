@@ -130,28 +130,15 @@ In your `turbo.json` file, you'll need to add the env variables to the appropria
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": {
-       "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env*"
-      ],
-      "outputs": [
-        "build/**",
-        "dist/**",
-        "node_modules/.cache/metro/**"
-      ],
-      "env": [
-        "PING"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["build/**", "dist/**", "node_modules/.cache/metro/**"],
+      "env": ["PING"]
     },
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": [
-        "PING"
-      ]
+      "env": ["PING"]
     }
   }
 }
@@ -166,6 +153,63 @@ You can then adjust the scripts in the root `package.json` of the monorepo to us
 }
 ```
 
+<details>
+<summary>Automating porting .env variables to `turbo.json`</summary>
+
+Keeping the env variable keys in `turbo.json` up to date with what's in the `.env` can be hard to stay on top of. Here's script that will automatically update the `turbo.json` file with the keys from the `.env` file, you can run it in CI or locally:
+
+```typescript
+import path from "path";
+import JsonFile from "@expo/json-file";
+import dotenvx from "@dotenvx/dotenvx";
+
+const turboJsonFilePath = path.join(process.cwd(), "turbo.json");
+const turboJsonFile = new JsonFile(turboJsonFilePath);
+const turboJson = turboJsonFile.read();
+
+/**
+ * getEnvKeys - get environment keys from .env file
+ */
+function getEnvKeys(): string[] {
+  const envPath = path.join(process.cwd(), ".env");
+  dotenvx.config({ path: envPath });
+
+  const envKeys = dotenvx.get(undefined, [], false, "", true) as Record<
+    string,
+    string
+  >;
+
+  return envKeys;
+}
+
+/**
+ * main - write environment keys to turbo.json
+ */
+async function main() {
+  const projectEnvKeys = getEnvKeys();
+
+  await turboJsonFile.writeAsync({
+    ...turboJson,
+    tasks: {
+      // @ts-ignore
+      ...turboJson.tasks,
+      build: {
+        // @ts-ignore
+        ...turboJson.tasks.build,
+        env: projectEnvKeys,
+      },
+      dev: {
+        // @ts-ignore
+        ...turboJson.tasks.dev,
+        env: projectEnvKeys,
+      },
+    },
+  });
+}
+
+void main();
+```
+
 ## Encrypting certificates with dotenvx
 
 Another benefit of using dotenvx is that you can store encrypted development certificates in the `.env` file and have developers decrypt them onto their machines straight from the repository.
@@ -176,7 +220,7 @@ You'll first need to ensure you have the following certificates installed locall
 
 1. Apple Distribution Certificate (`.cer` file)
 2. Apple Distribution Private Key (`.p12` file)
-  a. This file requires a password, which is also required.
+   a. This file requires a password, which is also required.
 
 These get generated automatically when first setting up a project with EAS. If you did this, you can find them in your Expo dashboard under the project settings > credentials.
 
@@ -245,5 +289,5 @@ echo -n "$key" > /path/to/key.p12
 
 The developer should first copy the value of the decrypted .p12 password and then double-click on each file to add them to their machine's keychain.
 
-<br/>
-<br/>
+<br />
+<br />
