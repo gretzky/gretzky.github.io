@@ -1,0 +1,249 @@
+---
+title: "Environment Variables in Expo"
+description: "How to manage environment variables in an Expo project with dotenvx"
+category: ["development"]
+pubDate: 2024-08-27
+lastUpdated: 2024-08-27
+---
+
+import ExternalLink from "../../components/ExternalLink.astro";
+
+I've been working with Expo since 2018 and as it's come to be a mature framework it's been my go-to for production projects. The most cumbersome piece of Expo is managing environment variables.
+
+## The Problem
+
+There are 3 types of environment variables at play:
+
+1. **Variables**: Strings that are secret-ish, but should be protected by other means or elsewhere (e.g. an API url)
+2. **Secrets**: API keys to external services (e.g. Firebase, etc.)
+3. **Certificates**: Keys and certificates needed to develop locally (e.g. Apple Distribution Certificate, Android Keystore, etc.)
+
+Typically, all of these are needed for both developing and deploying a project. Each of these has their own set of complexities, and a gripe I've always had is that the presented solutions tend to introduce _more_ complexity. That complexity increases if you're working with a distributed team.
+
+<details>
+<summary>Typical solutions</summary>
+
+### All-in-one with EAS
+
+If you're using Expo and EAS, their solution is to <ExternalLink href="https://docs.expo.dev/build-reference/variables/" title="store your secrets in EAS" /> and then work off of development builds from EAS (no local builds).
+
+The 'hidden' cost of this, however, can get out of control quickly if you have a distributed team that's building multiple features that require native libraries. Since 2-3 builds are needed for a single development app (iOS device, iOS Simulator, Android), and each build is between $2-4, you're looking at $4-10 total for a single developer. Once those features get merged, _more_ development builds need to be built that contain all native changes.
+
+Nobody wants to pay for throwaway stuff. This is when folks move into building the app locally.
+
+### Local builds
+
+Ultimately, many projects end up having to go this route for one way or another. If this is the case, environment variable management has to be done locally. With the `.env` file not being committed to the repo, getting the environment variables to the developer is a manual process.
+
+There are several ways to do this:
+
+- Use a service like <ExternalLink href="https://www.doppler.com/" title="Doppler" />
+- Store the `.env` file in another service like 1Password where developers can download it
+
+Both of these are fine, but introduce complexities and requiring developers to manage and communicate updates to any variables. This isn't abnormal, and how it works the majority of the time, but still not ideal.
+
+</details>
+
+## The Solution
+
+**Enter <ExternalLink href="https://dotenvx.com/" title="dotenvx" />.** Dotenvx allows you to encrypt the values of your `.env` files and decrypts them at runtime using a private decryption key. Using this method:
+
+- Your `.env` file gets encrypted and committed to your repo
+- A single private key is needed to decrypt the values, this gets stored elsewhere
+
+I like this solution for a few reasons:
+
+- If the `.env` file changes (i.e. keys get added/removed/changed), it's visible in a pull request
+- Storing only 1 single key is a lot easier than storing several, or storing a whole file
+- You can also encrypt certificates and other file values in the `.env` file
+
+### Setting up dotenvx
+
+I recommend installing dotenvx globally:
+
+```bash
+brew install dotenvx
+```
+
+As well as locally in your project:
+
+```bash
+# with npm
+npm install --save-dev @dotenvx/dotenvx
+# with yarn
+yarn add --dev @dotenvx/dotenvx
+# with pnpm
+pnpm add --save-dev @dotenvx/dotenvx
+# with bun
+bun add --dev @dotenvx/dotenvx
+```
+
+Create a `.env` file at the root of your project (regardless of if you're in a monorepo).
+
+```bash
+touch .env
+# add a variable to the .env file
+echo "PING=pong" > .env
+```
+
+### Encrypting the `.env` file
+
+With your `.env` file in place, encrypt it:
+
+```bash
+dotenvx encrypt .env
+```
+
+Open your `.env` file and it will look something like this:
+
+```bash
+#/-------------------[DOTENV_PUBLIC_KEY]--------------------/
+#/            public-key encryption for .env files          /
+#/       [how it works](https://dotenvx.com/encryption)     /
+#/----------------------------------------------------------/
+DOTENV_PUBLIC_KEY="0350420f322054f5ca3d7c28606f27f65a9ea5025349b4c642448e6069e4d4e566"
+
+# .env
+PING="encrypted:BER++pQ0xx/aUjajDfNKUMzyLE2mQ+hnjXyvU1qiTCOZGoZaBdVmQiQ0LCrdc8AxUf2PvpviW55oLGV+wGwGIAijYbUlzcfAbRk2BPM0ClBkPar86HHS7bqEDGdXi1BTIdzFKBw="
+```
+
+Additionally, a `.env.keys` file will be created. This should _not_ be committed, but rather stored in a secure location. This will also have to be stored in any cloud service that handles deployments (i.e. EAS).
+
+### Developing with dotenvx
+
+Dotenvx by default will decrypt the `.env` file at runtime. This means that you can continue to use `process.env` as you normally would. You'll need to pass `dotenvx` to your development commands:
+
+```bash
+dotenvx run -f .env -- expo start # or whatever your command is
+```
+
+Your `.env` file will be decrypted and available to your app.
+
+### Monorepo configuration
+
+If you're using a monorepo, a few other steps are needed. This assumes you're using <ExternalLink href="https://turbo.build/repo/docs" title="Turborepo" />.
+
+In your `turbo.json` file, you'll need to add the env variables to the appropriate task, as well as add the `.env` as an `input` to the task.
+
+```json
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+       "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*"
+      ],
+      "outputs": [
+        "build/**",
+        "dist/**",
+        "node_modules/.cache/metro/**"
+      ],
+      "env": [
+        "PING"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "env": [
+        "PING"
+      ]
+    }
+  }
+}
+```
+
+You can then adjust the scripts in the root `package.json` of the monorepo to use dotenvx and have environment variables be made available in all apps and packages:
+
+```json
+"scripts": {
+  "dev": "dotenvx run -- turbo dev",
+  "build": "dotenvx run -- turbo build",
+}
+```
+
+## Encrypting certificates with dotenvx
+
+Another benefit of using dotenvx is that you can store encrypted development certificates in the `.env` file and have developers decrypt them onto their machines straight from the repository.
+
+### Required files
+
+You'll first need to ensure you have the following certificates installed locally on your machine:
+
+1. Apple Distribution Certificate (`.cer` file)
+2. Apple Distribution Private Key (`.p12` file)
+  a. This file requires a password, which is also required.
+
+These get generated automatically when first setting up a project with EAS. If you did this, you can find them in your Expo dashboard under the project settings > credentials.
+
+**Be sure you have the password for the `.p12` file.**
+
+I recommend dropping the certs in the root of your repo where the `.env` file is located.
+
+### Hash and set the certificates
+
+First, we'll hash the content of each file with base64 so that we have a string hash for the `.env` file, and then we'll set that as the value for the variable.
+
+In the root of your repo, run the following:
+
+```bash
+touch hash.sh
+chmod +x hash.sh
+```
+
+Open `hash.sh` and paste the following, ensuring to update the paths to the `.cer` and `.p12` files:
+
+```bash
+cert=$(sha256sum /path/to/cert.cer | awk '{print $1}')
+key=$(sha256sum /path/to/key.p12 | awk '{print $1}')
+
+echo -n "$cert" | xxd -r -p | base64 | dotenvx set APPLE_CERT
+echo -n "$key" | xxd -r -p | base64 | dotenvx set APPLE_KEY
+```
+
+Run the script:
+
+```bash
+./hash.sh
+```
+
+Your `.env` file now should contain the hash values for the certificates. Now, add the password to the `.p12` key in the `.env` file.
+
+Your env file should have 3 variables now:
+
+```bash
+APPLE_CERT="" # base64 string
+APPLE_KEY="" # base64 string
+APPLE_KEY_PASSWORD="" # password
+```
+
+Lastly, run `dotenvx encrypt .env` to encrypt the values with the dotenvx public key. You can now commit the `.env` file to your repo.
+
+### Decrypting certificates
+
+Developers can now decrypt and add the certificates to their machines straight from the `.env` file. The developer must have the private key (`.env.keys`) file in their local clone of the repository.
+
+First, decyrpt the `.env` file:
+
+```bash
+dotenvx decrypt .env
+```
+
+Then, run the following to decrypt the certificates:
+
+```bash
+cert=$(dotenvx get APPLE_CERT | base64 -d | xxd -r -p)
+key=$(dotenvx get APPLE_KEY | base64 -d | xxd -r -p)
+
+echo -n "$cert" > /path/to/cert.cer
+echo -n "$key" > /path/to/key.p12
+```
+
+The developer should first copy the value of the decrypted .p12 password and then double-click on each file to add them to their machine's keychain.
+
+<br/>
+<br/>

@@ -1,6 +1,8 @@
 ---
 import Page from '../layouts/Page.astro';
+import ExternalLink from '../components/ExternalLink.astro';
 ---
+
 <Page title="about">
 	<div class="row">
 		<div class="column">
@@ -8,7 +10,7 @@ import Page from '../layouts/Page.astro';
 		</div>
 		<div class="column">
 			<p>Hello! I'm Spencer.<br/><br/>
-			I'm a mobile technologist and <a class="external" rel="noreferrer noopener" target="_blank" href="https://www.maine.gov/ifw/programs-resources/registered-maine-guides/index.html">Registered Maine Guide</a> living here in Vacationland with my 3 dogs.<br/><br/>I've been writing software for over 10 years, with React Native being my primary focus since 2016 and Expo since 2018. I've helped launch more than 5 applications, all of which are built with React Native and Expo. Currently, I'm a staff software engineer working on the <a class="external" rel="noreferrer noopener" target="_blank" href="https://going.com">Going</a> app.<br/><br/>Outside of that, I love geography, maps, and navigation and spend most of my free time traveling, camping with my dogs, skiing, or sea kayaking along Maine's coast. 
+			I'm a mobile technologist and <ExternalLink href="https://www.maine.gov/ifw/programs-resources/registered-maine-guides/index.html" title="Registered Maine Guide"/> living here in Vacationland with my 3 dogs.<br/><br/>I've been writing software for over 10 years, with React Native being my primary focus since 2016 and Expo since 2018. I've helped launch more than 5 applications, all of which are built with React Native and Expo. Currently, I'm a staff software engineer working on the <ExternalLink href="https://going.com" title='Going'/> app.<br/><br/>Outside of that, I love geography, maps, and navigation and spend most of my free time traveling, camping with my dogs, skiing, or sea kayaking along Maine's coast. 
 			</p>
 		</div>	
 	</div>	

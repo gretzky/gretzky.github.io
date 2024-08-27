@@ -1,51 +1,53 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Nav from '../components/Nav.astro';
-import "@fontsource/inter"
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Nav from "../components/Nav.astro";
+import "@fontsource/inter";
 
 const { title } = Astro.props;
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<BaseHead title={`spencer.town:${title}`} description={title} />
-	</head>
-	<body>
-		<Nav />
+  <head>
+    <BaseHead title={title} description={title} />
+  </head>
+  <body>
+    <Nav />
 
-		<div class="container">
-			<h2>{title}</h2>
-      <slot/>
-		</div>
-	</body>
+    <div class="container">
+      <h2>{title}</h2>
+      <slot />
+      <Footer />
+    </div>
+
+    <style>
+      html {
+        font-family: "Inter", sans-serif;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        height: 100vh;
+      }
+
+      h2 {
+        color: var(--beige);
+        font-size: 3rem;
+        font-weight: 800;
+        font-style: italic;
+      }
+
+      @media (min-width: 600px) {
+        .container {
+          width: 90%;
+        }
+      }
+    </style>
+  </body>
 </html>
-
-<style>
-	html {
-		font-family: "Inter", sans-serif;
-	}
-	
-	.container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin-left: auto;
-		margin-right: auto;
-		width: 100%;
-		height: 100vh;
-	}
-
-  h2 {
-		color: var(--beige);
-		font-size: 3rem;
-		font-weight: 800;
-		font-style: italic;
-	}
-
-	@media (min-width: 600px) {
-		.container {
-			width: 90%;
-		}
-	}
-</style>

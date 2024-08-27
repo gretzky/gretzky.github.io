@@ -1,0 +1,24 @@
+---
+import { ExternalLink as ExternalLinkIcon } from "lucide-astro"
+
+const { title, href } = Astro.props
+---
+
+<a 
+  target="_blank" 
+  rel="noopener noreferrer" 
+  href={href}>
+  <span style="text-decoration-line: underline;">
+    {title}
+  </span>
+  <ExternalLinkIcon style="width:10px" />
+</a>
+
+<style>
+  a {
+    color: var(--blue);
+    text-decoration-line: none;
+    font-weight: 600;
+    font-size: 18px;
+  }
+</style>

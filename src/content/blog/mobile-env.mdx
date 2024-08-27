@@ -7,6 +7,7 @@ lastUpdated: 2024-08-26
 ---
 
 import Tooltip from "../../components/Tooltip.astro";
+import ExternalLink from "../../components/ExternalLink.astro";
 
 Setting up a cross-platform mobile environment, especially for React Native,
 is <Tooltip initialText="type 3 fun" hoverText="not fun at all" />.
@@ -34,13 +35,13 @@ xcode-select --install
 
 ## 1. Install Packages
 
-Using <a href="https://brew.sh/" target="_blank" rel="noopener noreferrer">Homebrew</a> (or whatever your preferred package manager), you'll need the following packages:
+Using <ExternalLink href="https://brew.sh/" title='Homebrew'/> (or whatever your preferred package manager), you'll need the following packages:
 
 ```bash
 brew install gnupg applesimutils git node watchman fastlane aria2
 ```
 
-I also recommend <a href="https://dotenvx.com/docs/quickstart" target="_blank" rel="noopener noreferrer">dotenvx</a> for handling environment variables. It can be installed globally as well.
+I also recommend <ExternalLink href="https://dotenvx.com/docs/quickstart" title='dotenvx'/> for handling environment variables. It can be installed globally as well.
 
 ```bash
 brew install dotenvx
@@ -52,7 +53,7 @@ If you don't need iOS development, you can skip this step. I wouldn't.
 
 ### a. Install Xcode
 
-I prefer the **<a href="https://github.com/XcodesOrg/XcodesApp" target="_blank" rel="noopener noreferrer">xcodes</a>** library for Xcode version management.
+I prefer the <ExternalLink href="https://github.com/XcodesOrg/XcodesApp" title='xcodes'/> library for Xcode version management.
 
 ```bash
 brew install xcodes
@@ -191,7 +192,7 @@ avdmanager create avd -n <name> -k "system-images;android-<version>;google_apis;
 
 ## 4. React Native / Expo Setup
 
-At this point, your machine should be setup for native development. If you're using Expo, I highly recommend installing <a href="https://docs.expo.dev/build/orbit/" target="_blank" rel="noopener noreferrer">Expo Orbit</a>.
+At this point, your machine should be setup for native development. If you're using Expo, I highly recommend installing <ExternalLink href="https://docs.expo.dev/build/orbit/" title="Expo Orbit"/>
 
 ```bash
 brew install --cask expo-orbit

@@ -1,190 +1,207 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import dayjs from 'dayjs'
-import BaseHead from '../../components/BaseHead.astro';
-import Nav from '../../components/Nav.astro';
-import Card from '../../components/Card.astro';
-import "@fontsource/inter"
+import { type CollectionEntry, getCollection } from "astro:content";
+import dayjs from "dayjs";
+import BaseHead from "../../components/BaseHead.astro";
+import Nav from "../../components/Nav.astro";
+import Card from "../../components/Card.astro";
+import Footer from "../../components/Footer.astro";
+import "@fontsource/inter";
 
-const posts = await getCollection('blog');
+const posts = await getCollection("blog");
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.slug },
-		props: post,
-	}));
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
 }
 
-type Props = CollectionEntry<'blog'>;
+type Props = CollectionEntry<"blog">;
 
 const blog = Astro.props;
 const { Content } = await blog.render();
 
 const { pathname } = Astro.url;
 
-const relatedPosts = posts.filter(post => post.data.category.includes(post.data.category[0])).sort((a,z) => z.data.lastUpdated.valueOf() - a.data.lastUpdated.valueOf())
+const relatedPosts = posts
+  .filter((post) => {
+    return (
+      post.data.category.includes(post.data.category[0]) &&
+      pathname !== `/blog/${post.slug}/`
+    );
+  })
+  .sort((a, z) => z.data.lastUpdated.valueOf() - a.data.lastUpdated.valueOf());
 
-const lastUpdated = dayjs(blog.data.lastUpdated).format('DD MMM YYYY')
+const lastUpdated = dayjs(blog.data.lastUpdated).format("DD MMM YYYY");
 ---
 
- <!doctype html>
- <html lang="en">
-	<head>
-		<BaseHead title={blog.data.title} description={blog.data.description}/>
-	</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <BaseHead title={blog.data.title} description={blog.data.description} />
+  </head>
 
-	<body>
-		<Nav />
-		<div class="row">
-			<div class="card">
-				<Card title={`blog > ${blog.data.category}`} style="width:350px; height: 350px;">
-						<ul>
-							{relatedPosts.map(post => (
-								<li class:list={["item", { active: pathname === `/blog/${post.slug}/` }]}>
-								<a href={`/blog/${post.slug}/`}>{post.data.title}</a>
-							</li>
-					))}
-					</ul>
-				</Card>
-			</div>
-			<div class="col">
-				<h1 style="margin-top:-10px;">{blog.data.title}</h1>
-				<p style="margin-top:-25px;font-size:16px;font-style:italic;line-height:1;">
-					Last updated: {lastUpdated}
-				</p>
-				<Content />
-			</div>
-		</div>
-	</body>
+  <body>
+    <Nav />
+    <div class="row">
+      <div class="card">
+        <Card title={`blog > ${blog.data.category}`} style="width:350px;">
+          <ul>
+            <li class="item active">
+              <a>{blog.data.title}</a>
+            </li>
+            {
+              relatedPosts.map((post) => (
+                <li class="item">
+                  <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </Card>
+      </div>
+      <div class="col">
+        <h1 style="margin-top:-10px;">{blog.data.title}</h1>
+        <p
+          style="margin-top:-25px;font-size:16px;font-style:italic;line-height:1;"
+        >
+          Last updated: {lastUpdated}
+        </p>
+        <Content />
+      </div>
+    </div>
+    <Footer />
+    <style>
+      html {
+        font-family: "Inter", sans-serif;
+      }
+
+      .col {
+        p {
+          font-size: 18px;
+          color: var(--beige);
+          font-weight: 500;
+        }
+
+        li,
+        pre {
+          font-size: 18px;
+          color: var(--beige);
+          font-weight: 500;
+        }
+
+        img {
+          width: 80%;
+        }
+
+        summary {
+          font-size: 36px;
+          color: var(--beige);
+          font-weight: 800;
+          font-style: italic;
+          cursor: pointer;
+        }
+
+        /* Hide the default triangle */
+        summary::-webkit-details-marker {
+          display: none;
+        }
+        summary::marker {
+          content: "👉 "; /* You can change this to any character or even an image */
+          display: inline-block;
+          margin-right: 8px; /* Adjust spacing */
+          transform: rotate(0deg);
+          transition: transform 0.2s ease-in-out;
+        }
+
+        /* Rotate the marker when details are open */
+        details[open] summary::marker {
+          /* transform: rotate(90deg); */
+          content: "👇 "; /* You can change this to any character or even an image */
+        }
+
+        a:not([rel="noopener noreferrer"]) {
+          font-size: 18px;
+          color: var(--beige);
+          text-decoration-line: underline;
+        }
+
+        li {
+          color: var(--beige);
+        }
+      }
+
+      li.item {
+        list-style: point;
+      }
+
+      li.active {
+        list-style: eyes;
+      }
+
+      .item {
+        list-style: point;
+        color: var(--coal);
+        font-weight: 500;
+        letter-spacing: -0.5px;
+
+        .active {
+          list-style: eyes;
+          font-weight: 700;
+        }
+
+        a {
+          text-decoration-line: none;
+          color: var(--coal);
+        }
+      }
+
+      .active {
+        font-weight: 700;
+      }
+
+      .card {
+        display: none;
+      }
+
+      @media screen and (max-width: 1024px) {
+        .col {
+          margin-top: 50px;
+        }
+      }
+
+      @media screen and (min-width: 1024px) {
+        .card {
+          display: block;
+        }
+
+        .row {
+          display: flex;
+          flex-direction: row;
+          width: 90%;
+          margin: 100px auto 0;
+          gap: 5rem;
+
+          .col {
+            flex: 0.8;
+            flex-wrap: wrap;
+            width: 60%;
+          }
+        }
+      }
+
+      .meta {
+        margin-top: -20px;
+        text-align: center;
+        line-height: 1;
+      }
+
+      .divider {
+        border-bottom: 1px dashed var(--beige);
+        width: 80%;
+        margin: 30px 0 20px;
+      }
+    </style>
+  </body>
 </html>
-
-<style>
-	html {
-		font-family: "Inter", sans-serif;
-	}
-	
-	.col {
-		p {
-			font-size: 18px;
-			color: var(--beige);
-			font-weight: 500;
-		}
-
-		li, pre {
-			font-size: 18px;
-			color: var(--beige);
-			font-weight: 500;
-		}
-
-		img {
-			width: 80%;
-		}
-
-		summary {
-			font-size: 36px;
-			color: var(--beige);
-			font-weight: 800;
-			font-style: italic;
-		}
-
-		/* Hide the default triangle */
-		summary::-webkit-details-marker {
-			display: none;
-		}
-		summary::marker {
-			content: "👉 "; /* You can change this to any character or even an image */
-			display: inline-block;
-			margin-right: 8px; /* Adjust spacing */
-			transform: rotate(0deg);
-			transition: transform 0.2s ease-in-out;
-		}
-
-		/* Rotate the marker when details are open */
-		details[open] summary::marker {
-			/* transform: rotate(90deg); */
-			content: "👇 "; /* You can change this to any character or even an image */
-		}
-
-		a {
-			font-size: 18px;
-			color: var(--beige);
-			text-decoration-line: underline;
-		}
-
-		li {
-			color: var(--beige);
-		}
-	}
-
-	li.item {
-    list-style: point;
-  }
-
-	li.active {
-  	list-style: eyes;
-	}
-
-	.item {
-		list-style: point;
-		color: var(--coal);
-		font-weight: 500;
-		letter-spacing: -0.5px;
-
-		.active {
-			list-style: eyes;
-			font-weight: 700;
-		}
-
-		a {
-			text-decoration-line: none;
-			color: var(--coal);
-		}
-	}
-
-	.active {
-		font-weight: 700;
-	}
-
-	.card {
-		display: none;
-	}
-
-	@media screen and (max-width: 1024px) {
-		.col {
-			margin-top: 50px;
-		}
-	}
-
-	@media screen and (min-width: 1024px) {
-		.card {
-			display: block;
-		}
-
-		.row {
-			display: flex;
-			flex-direction: row;
-			width: 90%;
-			margin: 100px auto 0;
-			gap: 5rem;
-			
-			.col {
-				flex: 0.8;
-				flex-wrap: wrap;
-				width: 60%;
-			}
-		}
-	}
-
-	.meta {
-		margin-top: -20px;
-		text-align: center;
-		line-height: 1;
-	}
-
-	.divider {
-		border-bottom: 1px dashed var(--beige);
-		width: 80%;
-		margin: 30px 0 20px;
-	}
-</style>

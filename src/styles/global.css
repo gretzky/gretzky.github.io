@@ -121,3 +121,9 @@ p li {
     font-size: 1.5rem;
   }
 }
+
+pre {
+  font-family: "Hack", monospace;
+  padding: 1rem;
+  width: 75%;
+}

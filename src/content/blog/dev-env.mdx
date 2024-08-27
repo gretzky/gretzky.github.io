@@ -6,41 +6,76 @@ pubDate: 2024-08-26
 lastUpdated: 2024-08-26
 ---
 
+import ExternalLink from "../../components/ExternalLink.astro";
+
+<ExternalLink
+  href="https://github.com/gretzky/dotfiles"
+  style="color:var(--blue);"
+  title="View my dotfiles on GitHub"
+/>
+
 As stereotypical as it is, my development machine really is a second home. I like it to be comfortable and efficient ~~and have a bidet in every room~~.
 
-Here's my machine configuration, as well as my desk setup. For my mobile-specific environment, [go here](/blog/mobile-env). <a target="_blank" rel="noopener noreferrer" href="https://github.com/gretzky/dotfiles">Dotfiles repository</a>.
+Here's my machine configuration, as well as my desk setup. For my mobile-specific environment, [go here](/blog/mobile-env).
 
 ## Styles
 
-Across the board, I use the <a target="_blank" rel="noopener noreferrer" href="https://github.com/ayu-theme/ayu-colors">Ayu</a> color scheme (usually 'mirage') and the [Hack Nerd Font](https://www.nerdfonts.com/).
+Across the board, I use the <ExternalLink href="https://github.com/ayu-theme/ayu-colors" title="Ayu" /> color scheme (usually 'mirage') and <ExternalLink href="https://www.nerdfonts.com/" title="Hack Nerd Font"/> for my terminal and editor.
 
 ## Terminal
 
-I live in my terminal. I use **<a target="_blank" rel="noopener noreferrer" href="https://github.com/jwilm/alacritty">Alacritty</a>**.
+<img
+  src="/blog/dev-env.png"
+  alt="Alacritty terminal with Starship.rs displaying the contents of the spencer.town repository."
+  style="width:50%;"
+/>
 
-**Shell**: ZSH with <a target="_blank" rel="noopener noreferrer" href="https://starship.rs/">starship prompt</a>
+I use the <ExternalLink href="https://github.com/jwilm/alacritty" title='Alacritty' /> terminal emulator.
 
-**Plugin management**: <a target="_blank" rel="noopener noreferrer" href="https://github.com/zplug/zplug">zplug</a>
+**Shell**: ZSH with <ExternalLink href="https://starship.rs/" title="starship prompt"/>
 
-**Filesystem navigation**: <a target="_blank" rel="noopener noreferrer" href="https://github.com/rupa/z">z</a>, <a target="_blank" rel="noopener noreferrer" href="https://github.com/junegunn/fzf">fzf</a>, and <a target="_blank" rel="noopener noreferrer" href="https://github.com/athityakumar/colorls">color-ls</a>.
+**Plugin management**: <ExternalLink href="https://github.com/zplug/zplug" title="zplug"/>
 
-**Multiplexer**: <a target="_blank" rel="noopener noreferrer" href="https://github.com/tmux/tmux">tmux</a>
+**Filesystem navigation**: <ExternalLink href="https://github.com/rupa/z" title="z"/>, <ExternalLink href="https://github.com/junegunn/fzf" title="fzf"/>, and <ExternalLink href="https://github.com/athityakumar/colorls" title="color-ls"/>
 
-For in-terminal editing, I use <a target="_blank" rel="noopener noreferrer" href="https://neovim.io/">neovim</a> with <a target="_blank" rel="noopener noreferrer" href="https://github.com/junegunn/vim-plug">vim-plug</a> to handle the following plugins:
+**Multiplexer**: <ExternalLink href="https://github.com/tmux/tmux" title="tmux"/>
 
-- **<a target="_blank" rel="noopener noreferrer" href="https://github.com/junegunn/fzf.vim">fzf</a>**: fuzzy file finder
-- **<a target="_blank" rel="noopener noreferrer" href="https://github.com/junegunn/goyo.vim">goyo</a>**: distraction-free writing
-- **<a target="_blank" rel="noopener noreferrer" href="https://github.com/junegunn/limelight.vim">limelight</a>**: focus on the current paragraph
-- **<a target="_blank" rel="noopener noreferrer" href="https://github.com/itchyny/lightline.vim">lightline</a>**: status line
-- **<a target="_blank" rel="noopener noreferrer" href="https://github.com/dense-analysis/ale">ale</a>**: linting
-- **<a target="_blank" rel="noopener noreferrer" href="https://github.com/preservim/nerdtree">nerdtree</a>**: file explorer
-- **<a target="_blank" rel="noopener noreferrer" href="https://github.com/preservim/nerdcommenter">nerdcommenter</a>**: comment toggling
-- **<a target="_blank" rel="noopener noreferrer" href="https://github.com/mhinz/vim-signify">signify</a>**: version control indicators
-- **<a target="_blank" rel="noopener noreferrer" href="https://github.com/voldikss/vim-floaterm">floaterm</a>**: terminal in a floating window
+For in-terminal editing, I use <ExternalLink href="https://neovim.io/" title="neovim"/> with <ExternalLink href="https://github.com/junegunn/vim-plug" title="vim-plug"/> to handle the following plugins:
+
+- <ExternalLink href="https://github.com/junegunn/fzf.vim" title="fzf" />: fuzzy
+  file finder
+- <ExternalLink href="https://github.com/junegunn/goyo.vim" title="goyo" />:
+  distraction-free writing
+- <ExternalLink
+    href="https://github.com/junegunn/limelight.vim"
+    title="limelight"
+  />
+  : focus on the current paragraph
+- <ExternalLink
+    href="https://github.com/itchyny/lightline.vim"
+    title="lightline"
+  />
+  : status line
+- <ExternalLink href="https://github.com/dense-analysis/ale" title="ALE" />:
+  linting
+- <ExternalLink href="https://github.com/preservim/nerdtree" title="nerdtree" />:
+  : file explorer
+- <ExternalLink
+    href="https://github.com/preservim/nerdcommenter"
+    title="nerdcommenter"
+  />
+  : comment toggling
+- <ExternalLink href="https://github.com/mhinz/vim-signify" title="signify" />:
+  version control indicators
+- <ExternalLink
+    href="https://github.com/voldikss/vim-floaterm"
+    title="floaterm"
+  />
+  : terminal in a floating window
 
 ## Text Editor
 
-When not in the terminal, I'm using <a target="_blank" rel="noopener noreferrer" href="https://code.visualstudio.com/">VSCode</a>.
+When not in the terminal, I'm using <ExternalLink href="https://code.visualstudio.com/" title="VSCode" />.
 
 Aside from basic language extensions, I use the following extensions heavily:
 
@@ -56,7 +91,7 @@ Aside from basic language extensions, I use the following extensions heavily:
 
 ## Tooling
 
-I use <a target="_blank" rel="noopener noreferrer" href="https://brew.sh/">Homebrew</a> to manage my system packages.
+I use <ExternalLink href="https://brew.sh/" title="Homebrew" /> to manage my system packages.
 
 ### UNIX
 
@@ -86,147 +121,107 @@ I've added all of the UNIX and GNU ports, since I prefer Linux utilities over th
 
 For the more finicky languages (especially on macOS), I use the following version managers:
 
-**Node**: <a target="_blank" rel="noopener noreferrer" href="https://github.com/tj/n">n</a>
+**Node**: <ExternalLink href="https://github.com/tj/n" title="n" />
 
-**Ruby**: <a target="_blank" rel="noopener noreferrer" href="https://github.com/postmodern/chruby) with [ruby-install](https://github.com/postmodern/ruby-install">chruby</a>
+**Ruby**: <ExternalLink href="https://github.com/postmodern/chruby" title="chruby"/> with <ExternalLink href="https://github.com/postmodern/ruby-install" title="ruby-install"/>
 
-**Python**: <a target="_blank" rel="noopener noreferrer" href="https://github.com/pyenv/pyenv">pyenv</a>
+**Python**: <ExternalLink href="https://github.com/pyenv/pyenv" title="pyenv"/>
 
 ## Software
 
 I use the following software on a daily basis:
 
-- **<a target="_blank" rel="noopener noreferrer" href="https://1password.com/">1Password</a>**: password management
-- **<a target="_blank" rel="noopener noreferrer" href="https://www.alfredapp.com/">Alfred</a>**: productivity tool
-- **<a target="_blank" rel="noopener noreferrer" href="https://cleanshot.com/">CleanShot X</a>**: screenshot tool
-- **<a target="_blank" rel="noopener noreferrer" href="https://github.com/Mortennn/Dozer">Dozer</a>**: menu bar hider
-- **<a target="_blank" rel="noopener noreferrer" href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>**: web browser
-- **<a target="_blank" rel="noopener noreferrer" href="https://bjango.com/mac/istatmenus/">iStat Menus</a>**: system monitoring
-- **<a target="_blank" rel="noopener noreferrer" href="https://obsidian.md/">Obsidian</a>**: note-taking
-- **<a target="_blank" rel="noopener noreferrer" href="https://rectangleapp.com/">Rectangle</a>**: window manager
+<ul>
+  <li><ExternalLink href="https://1password.com/" title="1Password"/>: password management</li>
+  <li><ExternalLink href="https://www.alfredapp.com/" title="Alfred" />:
+  productivity tool</li>
+  <li><ExternalLink href="https://cleanshot.com/" title="CleanShot X"/>:
+  screenshot tool</li>
+  <li><ExternalLink href="https://github.com/Mortennn/Dozer" title="Dozer"/>: menu bar hider</li>
+  <li><ExternalLink href="https://www.mozilla.org/en-US/firefox/new/" title="Firefox"/>: web browser</li>
+  <li><ExternalLink href="https://bjango.com/mac/istatmenus/" title="iStat Menus"/>: system monitoring</li>
+  <li><ExternalLink href="https://obsidian.md/" title="Obsidian"/>: note-taking</li>
+  <li><ExternalLink href="https://rectangleapp.com/" title="Rectangle"/>:
+  window manager</li>
+</ul>
 
 <details>
 <summary>Hardware</summary>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://www.apple.com/shop/buy-mac/macbook-pro/16-inch-space-black-apple-m3-max-with-16-core-cpu-and-40-core-gpu-48gb-memory-1tb"
->
-  💻 Macbook Pro 16" M3 Max (2023)
-</a>
+  title='💻 Macbook Pro 16" M3 Max (2023)'
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://www.tomshardware.com/reviews/dell-s2719dgf-155hz-gaming-monitor,5881.html"
->
-  🖥️ Dell 27" Monitor
-</a>
+  title='🖥️ Dell 27" Monitor'
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://audioengine.com/shop/wirelessspeakers/a2-wireless-computer-speakers/#"
->
-  🔊 AudioEngine A2+ Speakers
-</a>
+  title="🔊 AudioEngine A2+ Speakers"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://www.logitech.com/en-us/products/mice/mx-ergo-wireless-trackball-mouse.html?sp=1&searchclick=logi"
->
-  🖱️ Logitech MX ERGO Trackball Mouse
-</a>
+  title="🖱️ Logitech MX ERGO Trackball Mouse"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://www.logitech.com/en-us/products/webcams/c920s-pro-hd-webcam.960-001257.html"
->
-  📷 Logitech C920s Webcam
-</a>
+  title="📷 Logitech C920s Webcam"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://www.logitechg.com/en-us/products/streaming-gear/yeti-premium-usb-microphone.988-000101.html"
->
-  🎙️ Blue Yeti Microphone
-</a>
+  title=" 🎙️ Blue Yeti Microphone"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://www.kiiboom.com/products/kiiboom-phantom-81-v2?variant=44032174489844"
->
-  ⌨️ KiiBOOM Phantom 81 v2 Keyboard
-</a>
+  title="⌨️ KiiBOOM Phantom 81 v2 Keyboard"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://zealpc.net/products/zilent?variant=5894817710118"
->
-  🤫 Zilent v2 78g switches
-</a>
+  title="🤫 Zilent v2 78g switches"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://dailyclack.com/products/epbt-cool-kids-r2"
->
-  🆒 ePBT Cool Kids Keycaps
-</a>
+  title="🆒 ePBT Cool Kids Keycaps"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://www.benq.com/en-us/lighting/monitor-light/screenbar.html"
->
-  🚥 BenQ ScreenBar
-</a>
+  title="🚥 BenQ ScreenBar"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://www.autonomous.ai/standing-desks/autonomous-desk-eureka"
->
-  🧍 Autonomous Eureka Standing Desk
-</a>
+  title="🧍 Autonomous Eureka Standing Desk"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://store.steelcase.com/turnstone-buoy?cclcl=en_US"
->
-  🪑 Steelcase Buoy Chair
-</a>
+  title="🪑 Steelcase Buoy Chair"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://www.amazon.com/Kangaroo-Original-Standing-Commercial-Ergonomic/dp/B0153NEAHW"
->
-  🦘 Kangaroo Anti-Fatigue Mat
-</a>
+  title="🦘 Kangaroo Anti-Fatigue Mat"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://www.bose.com/p/bose-noise-cancelling-headphones-700-uc/NC700UC-HEADPHONEARN.html"
->
-  🎧 Bose 700 Noise Canceling Headphones
-</a>
+  title="🎧 Bose 700 Noise Canceling Headphones"
+/>
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
+<ExternalLink
   href="https://www.logitech.com/en-us/products/lighting/litra-glow.946-000001.html"
->
-  💡 Logitech Litra Glow
-</a>
+  title="💡 Logitech Litra Glow"
+/>
 
 </details>
 
